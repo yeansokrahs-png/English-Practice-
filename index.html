@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>លំហាត់អនុវត្ត វេយ្យាករណ៍ និង វាក្យសព្ទ</title>
+<style>
+:root{
+  --navy:#12294d; --navy2:#1c3a66; --teal:#0f8b93; --teal-d:#0b6b72;
+  --gold:#c9a227; --gold-l:#e6c95a; --bg:#eef2f6; --card:#ffffff;
+  --ink:#1f2733; --muted:#5b6b7d; --line:#dce4ec;
+  --good:#1f9d55; --good-bg:#e7f6ee; --bad:#d0342c; --bad-bg:#fbeae9;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Khmer OS Siemreap","Khmer OS System","Noto Sans Khmer",system-ui,-apple-system,Arial,sans-serif;
+  font-size:16px; line-height:1.7; -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:920px;margin:0 auto;padding:20px 16px 80px}
+header{
+  background:linear-gradient(135deg,var(--navy),var(--navy2));
+  color:#fff;border-radius:16px;padding:22px 24px;
+  box-shadow:0 8px 24px rgba(18,41,77,.22);border-top:4px solid var(--gold);
+}
+header h1{
+  margin:0 0 6px;font-size:22px;letter-spacing:.5px;
+  font-family:"Khmer OS Muol Light","Khmer OS Muol","Khmer OS Siemreap",serif;
+  color:#fff;line-height:1.5;
+}
+header .sub{color:#cfe0f0;font-size:14px;margin:0}
+header .src{color:var(--gold-l);font-size:13px;margin-top:8px}
+
+.bar{
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;
+  background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:12px 16px;margin:16px 0;
+}
+.bar .chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:#eaf3f4;color:var(--teal-d);border:1px solid #cfe6e8;
+  padding:5px 12px;border-radius:999px;font-size:13px;font-weight:600;}
+.chip.gold{background:#fbf4dc;color:#8a6d10;border-color:#eddca0}
+.chip.navy{background:#e8eefa;color:var(--navy);border-color:#cdd9f2}
+
+.section-title{display:flex;align-items:center;gap:10px;margin:26px 0 12px;
+  font-family:"Khmer OS Battambang","Khmer OS Siemreap",sans-serif;
+  font-size:19px;font-weight:700;color:var(--navy);}
+.section-title .n{background:var(--teal);color:#fff;width:30px;height:30px;border-radius:8px;
+  display:grid;place-items:center;font-size:15px;flex:none;}
+.section-title.voc .n{background:var(--gold);color:#3a2e05}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:18px 18px 14px;margin:0 0 14px;box-shadow:0 2px 6px rgba(20,40,70,.05);}
+.qhead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:8px}
+.qnum{font-weight:700;color:var(--teal-d);font-size:15px;flex:none;background:#eaf3f4;border-radius:8px;padding:2px 10px;}
+.card.voc .qnum{color:#8a6d10;background:#fbf4dc}
+.year{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 9px;white-space:nowrap}
+.stem{font-size:16.5px;color:var(--ink);margin:2px 0 12px}
+.blank{display:inline-block;min-width:74px;border-bottom:2px solid var(--teal);margin:0 4px;vertical-align:bottom;}
+.card.voc .blank{border-bottom-color:var(--gold)}
+
+.opts{display:grid;gap:8px}
+.opt{display:flex;align-items:flex-start;gap:10px;border:1.5px solid var(--line);
+  border-radius:10px;padding:9px 12px;background:#fff;transition:.15s;}
+.opt.sopt{cursor:default}
+label.opt{cursor:pointer;-webkit-tap-highlight-color:transparent}
+label.opt:hover{border-color:var(--teal);background:#f6fbfb}
+.opt input{margin-top:5px;accent-color:var(--teal);flex:none;width:18px;height:18px}
+.opt .lab{font-weight:700;color:var(--navy);flex:none;width:22px;text-align:center;}
+.opt .txt{flex:1}
+.opt.sel{border-color:var(--teal);background:#eef8f8}
+.card.voc label.opt:hover{border-color:var(--gold)}
+.card.voc .opt.sel{border-color:var(--gold);background:#fdf8e6}
+.opt.correct{border-color:var(--good);background:var(--good-bg)}
+.opt.correct .lab{color:var(--good)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.opt.wrong .lab{color:var(--bad)}
+.opt .mark{margin-left:auto;font-weight:700;flex:none;font-size:13.5px}
+.opt.correct .mark{color:var(--good)}
+.opt.wrong .mark{color:var(--bad)}
+.card.done label.opt{cursor:default}
+.card.miss{border-color:#f0c98a}
+.tag{display:inline-block;font-size:12.5px;margin-top:8px;padding:3px 10px;border-radius:8px;font-weight:600}
+.tag.ok{background:var(--good-bg);color:var(--good)}
+.tag.no{background:var(--bad-bg);color:var(--bad)}
+.tag.na{background:#fff3e0;color:#b26a00}
+
+.reveal{margin-top:10px}
+.reveal summary{cursor:pointer;color:var(--teal-d);font-weight:600;font-size:14px;
+  list-style:none;display:inline-block;padding:4px 10px;background:#eaf3f4;border-radius:8px;}
+.reveal summary::-webkit-details-marker{display:none}
+.card.voc .reveal summary{color:#8a6d10;background:#fbf4dc}
+.ansline{margin-top:8px;padding:8px 12px;background:var(--good-bg);border-radius:8px;color:#155e33}
+
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0}
+button{font-family:inherit;font-size:16px;font-weight:700;border:none;border-radius:12px;
+  padding:13px 24px;cursor:pointer;transition:.15s;-webkit-appearance:none;}
+.btn-primary{background:var(--teal);color:#fff;box-shadow:0 4px 12px rgba(15,139,147,.3)}
+.btn-primary:hover{background:var(--teal-d)}
+.btn-primary:disabled{background:#a8c4c6;box-shadow:none;cursor:not-allowed}
+.btn-gold{background:var(--gold);color:#3a2e05;box-shadow:0 4px 12px rgba(201,162,39,.3)}
+.btn-gold:hover{background:#b28f1c}
+.btn-ghost{background:#fff;color:var(--navy);border:1.5px solid var(--line)}
+.btn-ghost:hover{border-color:var(--navy)}
+
+.score{display:none;background:#fff;border:1px solid var(--line);border-radius:16px;
+  padding:20px;margin:16px 0;box-shadow:0 6px 18px rgba(20,40,70,.1);border-top:5px solid var(--gold);}
+.score.show{display:block}
+.score .big{font-family:"Khmer OS Muol Light","Khmer OS Siemreap",serif;
+  font-size:26px;color:var(--navy);text-align:center;margin:0 0 4px;}
+.score .pct{text-align:center;font-size:16px;color:var(--muted);margin-bottom:14px}
+.score .split{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.score .pill{background:#f4f8fb;border:1px solid var(--line);border-radius:12px;padding:10px 18px;text-align:center;min-width:130px;}
+.score .pill b{display:block;font-size:22px;color:var(--teal-d)}
+.score .pill.v b{color:#8a6d10}
+.score .pill span{font-size:13px;color:var(--muted)}
+.msg{text-align:center;margin-top:12px;font-weight:600;font-size:15.5px}
+
+.foot{text-align:center;color:var(--muted);font-size:13px;margin-top:30px;line-height:1.9}
+.warn{display:none;background:#fff3e0;color:#8a5a00;border:1px solid #f0c98a;
+  border-radius:10px;padding:10px 14px;margin:12px 0;font-size:14px}
+.warn.show{display:block}
+.notice{background:#e8eefa;color:var(--navy);border:1px solid #cdd9f2;border-radius:10px;
+  padding:10px 14px;margin:14px 0;font-size:13.5px;line-height:1.8}
+#app{display:none}
+@media(max-width:520px){
+  header h1{font-size:18px}.stem{font-size:16px}.wrap{padding:14px 10px 70px}
+  .score .big{font-size:22px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>លំហាត់អនុវត្ត វេយ្យាករណ៍ និង វាក្យសព្ទ</h1>
+    <p class="sub">Grammar &amp; Vocabulary Practice — ភាសាអង់គ្លេស ថ្នាក់ទី១២ (បាក់ឌុប)</p>
+    <p class="src">ប្រមូលលំហាត់ពីវិញ្ញាសាធ្លាប់ចេញប្រឡងសញ្ញាបត្រមធ្យមសិក្សាទុតិយភូមិ ឆ្នាំ២០០៧ ដល់ ២០២៥</p>
+  </header>
+
+  <!-- ============ INTERACTIVE APP (requires JavaScript) ============ -->
+  <div id="app">
+    <div class="bar">
+      <div class="chips">
+        <span class="chip navy">សំណុំលេខ <b id="setNo">1</b></span>
+        <span class="chip">លំហាត់ ១០ (វេយ្យាករណ៍ ៥ + វាក្យសព្ទ ៥)</span>
+      </div>
+      <div class="chips"><span class="chip gold" id="poolInfo"></span></div>
+    </div>
+
+    <div class="warn" id="warn"></div>
+
+    <div class="score" id="score">
+      <p class="big" id="scoreBig"></p>
+      <p class="pct" id="scorePct"></p>
+      <div class="split">
+        <div class="pill"><b id="gScore"></b><span>វេយ្យាករណ៍ (Grammar)</span></div>
+        <div class="pill v"><b id="vScore"></b><span>វាក្យសព្ទ (Vocabulary)</span></div>
+      </div>
+      <p class="msg" id="msg"></p>
+    </div>
+
+    <div class="section-title"><span class="n">A</span> ផ្នែកទី ១ ៖ វេយ្យាករណ៍ (Grammar)</div>
+    <div id="gWrap"></div>
+    <div class="section-title voc"><span class="n">B</span> ផ្នែកទី ២ ៖ វាក្យសព្ទ (Vocabulary)</div>
+    <div id="vWrap"></div>
+
+    <div class="actions">
+      <button class="btn-primary" id="checkBtn">ពិនិត្យ និង ដាក់ពិន្ទុ</button>
+      <button class="btn-gold" id="newBtn">លំហាត់ថ្មី</button>
+      <button class="btn-ghost" id="retryBtn" style="display:none">ធ្វើសំណុំនេះឡើងវិញ</button>
+    </div>
+  </div>
+
+  <!-- ============ STATIC FALLBACK (shows if JavaScript is off, e.g. iPhone Files preview) ============ -->
+  <div id="fallback">
+    <div class="notice">
+      កំណត់សម្គាល់ ៖ ដើម្បីធ្វើលំហាត់បែបអន្តរកម្ម មានការដាក់ពិន្ទុ និងផ្លាស់ប្តូរលំហាត់ថ្មីរាល់ពេលចូល
+      សូមបើកឯកសារនេះក្នុងកម្មវិធី <b>Safari</b> ឬ <b>Chrome</b> (មិនមែនក្នុងផ្ទាំង Preview របស់ Files ទេ)។
+      ខាងក្រោមនេះជាលំហាត់គំរូ ដែលអាចមើលបានគ្រប់ពេល ។
+    </div>
+    <div class="section-title"><span class="n">A</span> ផ្នែកទី ១ ៖ វេយ្យាករណ៍ (Grammar)</div>
+    <div class="card ">
+      <div class="qhead"><span class="qnum">លំហាត់ទី 1</span><span class="year">ប្រឡង 2007</span></div>
+      <div class="stem">We arrived <span class="blank"></span> Phnom Penh at 4.30 in the morning. </div>
+      <div class="opts"><div class="opt sopt"><span class="lab">A.</span><span class="txt">to </span></div><div class="opt sopt"><span class="lab">B.</span><span class="txt">at </span></div><div class="opt sopt"><span class="lab">C.</span><span class="txt">for </span></div><div class="opt sopt"><span class="lab">D.</span><span class="txt">in</span></div></div>
+      <details class="reveal"><summary>មើលចម្លើយត្រឹមត្រូវ</summary>
+        <div class="ansline">ចម្លើយត្រឹមត្រូវ ៖ <b>D. in</b></div>
+      </details>
+    </div><div class="card ">
+      <div class="qhead"><span class="qnum">លំហាត់ទី 2</span><span class="year">ប្រឡង 2008</span></div>
+      <div class="stem">I’m sorry I <span class="blank"></span> your party. I was away at that time. </div>
+      <div class="opts"><div class="opt sopt"><span class="lab">A.</span><span class="txt">missed </span></div><div class="opt sopt"><span class="lab">B.</span><span class="txt">failed </span></div><div class="opt sopt"><span class="lab">C.</span><span class="txt">passed </span></div><div class="opt sopt"><span class="lab">D.</span><span class="txt">lost</span></div></div>
+      <details class="reveal"><summary>មើលចម្លើយត្រឹមត្រូវ</summary>
+        <div class="ansline">ចម្លើយត្រឹមត្រូវ ៖ <b>A. missed </b></div>
+      </details>
+    </div><div class="card ">
+      <div class="qhead"><span class="qnum">លំហាត់ទី 3</span><span class="year">ប្រឡង 2009</span></div>
+      <div class="stem">The man <span class="blank"></span> hat blew off in the wind chased it across the park.</div>
+      <div class="opts"><div class="opt sopt"><span class="lab">A.</span><span class="txt">his</span></div><div class="opt sopt"><span class="lab">B.</span><span class="txt">who</span></div><div class="opt sopt"><span class="lab">C.</span><span class="txt">whose</span></div><div class="opt sopt"><span class="lab">D.</span><span class="txt">that</span></div></div>
+      <details class="reveal"><summary>មើលចម្លើយត្រឹមត្រូវ</summary>
+        <div class="ansline">ចម្លើយត្រឹមត្រូវ ៖ <b>C. whose</b></div>
+      </details>
+    </div><div class="card ">
+      <div class="qhead"><span class="qnum">លំហាត់ទី 4</span><span class="year">ប្រឡង 2010</span></div>
+      <div class="stem">The man <span class="blank"></span>of killing said that he was at the cinema at that time.</div>
+      <div class="opts"><div class="opt sopt"><span class="lab">A.</span><span class="txt">who are accused</span></div><div class="opt sopt"><span class="lab">B.</span><span class="txt">who is accused</span></div><div class="opt sopt"><span class="lab">C.</span><span class="txt">who was accused</span></div><div class="opt sopt"><span class="lab">D.</span><span class="txt">who were accused</span></div></div>
+      <details class="reveal"><summary>មើលចម្លើយត្រឹមត្រូវ</summary>
+        <div class="ansline">ចម្លើយត្រឹមត្រូវ ៖ <b>C. who was accused</b></div>
+      </details>
+    </div><div class="card ">
+      <div class="qhead"><span class="qnum">លំហាត់ទី 5</span><span class="year">ប្រឡង 2011</span></div>
+      <div class="stem">The pharmacist needed the doctor <span class="blank"></span> the prescription before she filled it.</div>
+      <div class="opts"><div class="opt sopt"><span class="lab">A.</span><span class="txt">to verify</span></div><div class="opt sopt"><span class="lab">B.</span><span class="txt">verifies</span></div><div class="opt sopt"><span class="lab">C.</span><span class="txt">verified</span></div><div class="opt sopt"><span class="lab">D.</span><span class="txt">verifying</span></div></div>
+      <details class="reveal"><summary>មើលចម្លើយត្រឹមត្រូវ</summary>
+        <div class="ansline">ចម្លើយត្រឹមត្រូវ ៖ <b>A. to verify</b></div>
+      </details>
+    </div>
+    <div class="section-title voc"><span class="n">B</span> ផ្នែកទី ២ ៖ វាក្យសព្ទ (Vocabulary)</div>
+    <div class="card voc">
+      <div class="qhead"><span class="qnum">លំហាត់ទី 1</span><span class="year">ប្រឡង 2007</span></div>
+      <div class="stem">When there is a discussion in class, you will only get full value from it if you <span class="blank"></span> in an argument. </div>
+      <div class="opts"><div class="opt sopt"><span class="lab">A.</span><span class="txt">participate </span></div><div class="opt sopt"><span class="lab">B.</span><span class="txt">share </span></div><div class="opt sopt"><span class="lab">C.</span><span class="txt">practise </span></div><div class="opt sopt"><span class="lab">D.</span><span class="txt">involve</span></div></div>
+      <details class="reveal"><summary>មើលចម្លើយត្រឹមត្រូវ</summary>
+        <div class="ansline">ចម្លើយត្រឹមត្រូវ ៖ <b>A. participate </b></div>
+      </details>
+    </div><div class="card voc">
+      <div class="qhead"><span class="qnum">លំហាត់ទី 2</span><span class="year">ប្រឡង 2008</span></div>
+      <div class="stem">Cambodian people follow <span class="blank"></span> </div>
+      <div class="opts"><div class="opt sopt"><span class="lab">A.</span><span class="txt">Hinduism </span></div><div class="opt sopt"><span class="lab">B.</span><span class="txt">Buddhism </span></div><div class="opt sopt"><span class="lab">C.</span><span class="txt">Islam </span></div><div class="opt sopt"><span class="lab">D.</span><span class="txt">Protestantism</span></div></div>
+      <details class="reveal"><summary>មើលចម្លើយត្រឹមត្រូវ</summary>
+        <div class="ansline">ចម្លើយត្រឹមត្រូវ ៖ <b>B. Buddhism </b></div>
+      </details>
+    </div><div class="card voc">
+      <div class="qhead"><span class="qnum">លំហាត់ទី 3</span><span class="year">ប្រឡង 2011</span></div>
+      <div class="stem">I hate doing the <span class="blank"></span>, especially cleaning the windows.</div>
+      <div class="opts"><div class="opt sopt"><span class="lab">A.</span><span class="txt">housework</span></div><div class="opt sopt"><span class="lab">B.</span><span class="txt">employments</span></div><div class="opt sopt"><span class="lab">C.</span><span class="txt">jobs</span></div><div class="opt sopt"><span class="lab">D.</span><span class="txt">homework</span></div></div>
+      <details class="reveal"><summary>មើលចម្លើយត្រឹមត្រូវ</summary>
+        <div class="ansline">ចម្លើយត្រឹមត្រូវ ៖ <b>A. housework</b></div>
+      </details>
+    </div><div class="card voc">
+      <div class="qhead"><span class="qnum">លំហាត់ទី 4</span><span class="year">ប្រឡង 2013</span></div>
+      <div class="stem">I like your hat, Bopha. It really <span class="blank"></span> you.</div>
+      <div class="opts"><div class="opt sopt"><span class="lab">A.</span><span class="txt">suiting</span></div><div class="opt sopt"><span class="lab">B.</span><span class="txt">passes</span></div><div class="opt sopt"><span class="lab">C.</span><span class="txt">shows</span></div><div class="opt sopt"><span class="lab">D.</span><span class="txt">suits</span></div></div>
+      <details class="reveal"><summary>មើលចម្លើយត្រឹមត្រូវ</summary>
+        <div class="ansline">ចម្លើយត្រឹមត្រូវ ៖ <b>D. suits</b></div>
+      </details>
+    </div><div class="card voc">
+      <div class="qhead"><span class="qnum">លំហាត់ទី 5</span><span class="year">ប្រឡង 2014</span></div>
+      <div class="stem">I <span class="blank"></span> on the news that the price of gas is going up again.</div>
+      <div class="opts"><div class="opt sopt"><span class="lab">A.</span><span class="txt">looked</span></div><div class="opt sopt"><span class="lab">B.</span><span class="txt">listened</span></div><div class="opt sopt"><span class="lab">C.</span><span class="txt">heard</span></div><div class="opt sopt"><span class="lab">D.</span><span class="txt">watched</span></div></div>
+      <details class="reveal"><summary>មើលចម្លើយត្រឹមត្រូវ</summary>
+        <div class="ansline">ចម្លើយត្រឹមត្រូវ ៖ <b>A. looked</b></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="foot">
+    ប្រភពលំហាត់ ៖ ឯកសារវិញ្ញាសាភាសាអង់គ្លេស ធ្លាប់ចេញប្រឡងសញ្ញាបត្រមធ្យមសិក្សាទុតិយភូមិ (បាក់ឌុប)<br>
+    កម្មវិធីអនុវត្តលំហាត់ សម្រាប់ការត្រៀមប្រឡង
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  try{
+    var appEl=document.getElementById('app');
+    var fbEl=document.getElementById('fallback');
+    // JavaScript is available -> show interactive app, hide static fallback
+    if(appEl) appEl.style.display='block';
+    if(fbEl) fbEl.style.display='none';
+
+    var BANK = {"grammar": [{"id": "g-0-1", "y": "2007", "q": "I’m afraid I really couldn’t eat any more. I’m ……………. ", "o": {"A": "fed up ", "B": "full ", "C": "filled up ", "D": "famished"}, "a": "B"}, {"id": "g-0-2", "y": "2007", "q": "Don’t tell Sokha about Chan and Mom. You know he can’t …………… a secret. ", "o": {"A": "hold ", "B": "save ", "C": "keep ", "D": "stop"}, "a": "C"}, {"id": "g-0-3", "y": "2007", "q": "Have you seen a mug anywhere? We seem to be one …………. ", "o": {"A": "short ", "B": "missed ", "C": "less ", "D": "under"}, "a": "B"}, {"id": "g-0-4", "y": "2007", "q": "If the animals came when they were called, the men …………. them easily without running. ", "o": {"A": "would have caught ", "B": "would catch ", "C": "will catch ", "D": "catch"}, "a": "B"}, {"id": "g-0-5", "y": "2007", "q": "If people did not die and leave the earth, the earth …………….. crowded. ", "o": {"A": "will be ", "B": "would be ", "C": "is ", "D": "would have been"}, "a": "B"}, {"id": "g-0-6", "y": "2007", "q": "This conflict must …………… immediately, because it causes much consequence. ", "o": {"A": "be solved ", "B": "is solved ", "C": "are solved ", "D": "was solved គ្រៀបគ្រៀង នង"}, "a": "A"}, {"id": "g-0-7", "y": "2007", "q": "Phnom Penh is now spreading west …………… the eye can see. ", "o": {"A": "as long as ", "B": "as far as ", "C": "as near as ", "D": "as good as"}, "a": "B"}, {"id": "g-0-8", "y": "2007", "q": "I would have spent my money for charity if I …………… billions of US dollars. ", "o": {"A": "have had ", "B": "had had ", "C": "had ", "D": "have"}, "a": "B"}, {"id": "g-0-9", "y": "2007", "q": "She had seen people who …………… in poverty all their lives. ", "o": {"A": "were living ", "B": "had been living ", "C": "are living ", "D": "have been living"}, "a": "B"}, {"id": "g-0-10", "y": "2007", "q": "Heavy snow …………… the train for several hours. ", "o": {"A": "cancelled ", "B": "postponed ", "C": "stopped ", "D": "delayed"}, "a": "D"}, {"id": "g-0-11", "y": "2007", "q": "We arrived …………… Phnom Penh at 4.30 in the morning. ", "o": {"A": "to ", "B": "at ", "C": "for ", "D": "in"}, "a": "D"}, {"id": "g-0-12", "y": "2007", "q": "I didn’t see you …………… the party last weekend. ", "o": {"A": "on ", "B": "by ", "C": "to ", "D": "at"}, "a": "D"}, {"id": "g-1-1", "y": "2007", "q": "I look forward ……………. you as soon as possible. ", "o": {"A": "seeing ", "B": "to seeing ", "C": "to see"}, "a": "B"}, {"id": "g-1-2", "y": "2007", "q": "I ……………. to America. ", "o": {"A": "have often been ", "B": "often have seen ", "C": "have been often"}, "a": "A"}, {"id": "g-1-3", "y": "2007", "q": "You look ……………. a teacher. ", "o": {"A": "like ", "B": "as ", "C": "the same like"}, "a": "A"}, {"id": "g-1-4", "y": "2007", "q": "How many brothers and sisters …………….? ", "o": {"A": "has you got ", "B": "do you have ", "C": "are you having"}, "a": "B"}, {"id": "g-1-5", "y": "2007", "q": "I knew that he ……………. waiting for somebody. ", "o": {"A": "will ", "B": "was ", "C": "is"}, "a": "B"}, {"id": "g-1-6", "y": "2007", "q": "We can’t live very long without ……………. . ", "o": {"A": "to eat ", "B": "eat ", "C": "eating"}, "a": "C"}, {"id": "g-1-7", "y": "2007", "q": "That’s the man ……………. took your coat. ", "o": {"A": "which ", "B": "that ", "C": "who"}, "a": "C"}, {"id": "g-1-8", "y": "2007", "q": "My mother ……………. my birthday. ", "o": {"A": "always forget ", "B": "forget always ", "C": "always forgets"}, "a": "C"}, {"id": "g-1-9", "y": "2007", "q": "……………. Sophanna doing this time yesterday? ", "o": {"A": "What was ", "B": "What is ", "C": "What are"}, "a": "A"}, {"id": "g-1-10", "y": "2007", "q": "It’s ……………. if you take the train. ", "o": {"A": "the quicker ", "B": "quicker ", "C": "the most quicker គ្រៀបគ្រៀង នង"}, "a": "B"}, {"id": "g-1-11", "y": "2007", "q": "This is the first time I ……………. a sport car. ", "o": {"A": "‘m driving ", "B": "drive ", "C": "‘ve driven"}, "a": "C"}, {"id": "g-1-12", "y": "2007", "q": "My wife will upset ……………. . ", "o": {"A": "if I don’t get back ", "B": "if I didn’t get back ", "C": "if I hadn’t got back"}, "a": "A"}, {"id": "g-2-1", "y": "2008", "q": "There was ……………. money left in my bank account. ", "o": {"A": "more ", "B": "no ", "C": "some ", "D": "any"}, "a": "B"}, {"id": "g-2-2", "y": "2008", "q": "Their house is ……………. near the Unaloam Pagoda. ", "o": {"A": "whereabouts ", "B": "anywhere ", "C": "somewhere ", "D": "anyplace"}, "a": "C"}, {"id": "g-2-3", "y": "2008", "q": "I’m sorry I ……………. your party. I was away at that time. ", "o": {"A": "missed ", "B": "failed ", "C": "passed ", "D": "lost"}, "a": "A"}, {"id": "g-2-4", "y": "2008", "q": "You are ……………. who has been there. ", "o": {"A": "the single ", "B": "the only one ", "C": "only one ", "D": "the only"}, "a": "B"}, {"id": "g-3-1", "y": "2008", "q": "Samnang did not go to school ……………. he was ill. ", "o": {"A": "if ", "B": "though ", "C": "because ", "D": "but"}, "a": "B"}, {"id": "g-3-2", "y": "2008", "q": "If it does not stop raining, the road …………….. ", "o": {"A": "have been flooded ", "B": "would be have flooded ", "C": "would be flooded ", "D": "will be flooded"}, "a": "D"}, {"id": "g-3-3", "y": "2008", "q": "I feel tired because I ……………. for hours. ", "o": {"A": "was working ", "B": "am working ", "C": "have been working ", "D": "has worked"}, "a": "D"}, {"id": "g-3-4", "y": "2008", "q": "Let’s go out for dancing, ……………. ? ", "o": {"A": "are we ", "B": "do not we ", "C": "will we ", "D": "shall we"}, "a": "C"}, {"id": "g-4-1", "y": "2009", "q": "Mr. Samnang was getting ready to leave the hotel when he ………………………..….. a phone call.", "o": {"A": "receives", "B": "had received", "C": "is receiving", "D": "received"}, "a": "D"}, {"id": "g-4-2", "y": "2009", "q": "The director ……………….……… for his vacation and will not return until next week.", "o": {"A": "leaving", "B": "had left", "C": "has left", "D": "will have left គ្រៀបគ្រៀង នង"}, "a": "C"}, {"id": "g-4-3", "y": "2009", "q": "………………………. I am tired, I will work late tonight.", "o": {"A": "Or", "B": "Even though", "C": "Because", "D": "So that"}, "a": "B"}, {"id": "g-4-4", "y": "2009", "q": "The final report on the project needs to be completed ………………..…………. possible.", "o": {"A": "as quickly as", "B": "quickly than", "C": "quickly as", "D": "more quickly"}, "a": "A"}, {"id": "g-4-5", "y": "2009", "q": "If the weather were sunny, we ……………….…………… indoors.", "o": {"A": "would stay", "B": "will stay", "C": "should stay", "D": "stay"}, "a": "A"}, {"id": "g-4-6", "y": "2009", "q": "I feel tired, because I ……………………………………... for hours.", "o": {"A": "was working", "B": "have been working", "C": "am working", "D": "has worked"}, "a": "B"}, {"id": "g-4-7", "y": "2009", "q": "If he were a millionaire, he ……………………………..…. you a palace.", "o": {"A": "would buy", "B": "will buy", "C": "should buy", "D": "buy"}, "a": "A"}, {"id": "g-4-8", "y": "2009", "q": "If Mr. Savuth does not arrive soon, we …………………………….. without him.", "o": {"A": "left", "B": "is leaving", "C": "had left", "D": "will leave"}, "a": "D"}, {"id": "g-4-9", "y": "2009", "q": "If I had a spare ticket, I ………………………………….. you to the concert.", "o": {"A": "could take", "B": "can take", "C": "take", "D": "will take"}, "a": "A"}, {"id": "g-4-10", "y": "2009", "q": "We arrived ……………………………….…. Phnom Penh at 4:30 in the morning.", "o": {"A": "to", "B": "at", "C": "for", "D": "in"}, "a": "D"}, {"id": "g-4-11", "y": "2009", "q": "If they understood the problem, they ………………………………….. a solution.", "o": {"A": "should find", "B": "will find", "C": "find", "D": "would find"}, "a": "D"}, {"id": "g-4-12", "y": "2009", "q": "I didn’t see you ……………………………….…. the party last weekend.", "o": {"A": "for", "B": "by", "C": "too", "D": "at"}, "a": "D"}, {"id": "g-5-1", "y": "2009", "q": "The man ………………………..….. hat blew off in the wind chased it across the park.", "o": {"A": "his", "B": "who", "C": "whose", "D": "that"}, "a": "C"}, {"id": "g-5-2", "y": "2009", "q": "If anyone phone me, tell them that I ……………….……… to the airport.", "o": {"A": "have gone", "B": "go", "C": "have been", "D": "was going"}, "a": "A"}, {"id": "g-5-3", "y": "2009", "q": "If it ………………………. rain, we’ll have the party outside.", "o": {"A": "doesn’t", "B": "couldn’t", "C": "didn’t", "D": "don’t"}, "a": "A"}, {"id": "g-5-4", "y": "2009", "q": "A company cannot survive if losses are always ………………..…………. profits.", "o": {"A": "great than", "B": "greater than", "C": "the greatest", "D": "great as គ្រៀបគ្រៀង នង"}, "a": "B"}, {"id": "g-5-5", "y": "2009", "q": "Our flight from Koh Kong to Ratanakiri was delayed ……………….…………… the heavy rain.", "o": {"A": "because of", "B": "because", "C": "on account", "D": "as result"}, "a": "A"}, {"id": "g-5-6", "y": "2009", "q": "Your mother used to visit you quite often, ……………………………………... ?", "o": {"A": "didn’t she", "B": "doesn’t she", "C": "wouldn’t she", "D": "hadn’t she"}, "a": "A"}, {"id": "g-5-7", "y": "2009", "q": "The magnificent ……………………………..…. temple was constructed by the Chinese.", "o": {"A": "8-centuries-old", "B": "8-century’s old", "C": "old-8-centuries", "D": "8-century-old"}, "a": "D"}, {"id": "g-5-8", "y": "2009", "q": "If he …………………………….., he would have been able to pass the exam.", "o": {"A": "studies hard", "B": "were studying hard", "C": "studying hard", "D": "had studied hard"}, "a": "D"}, {"id": "g-5-9", "y": "2009", "q": "If Kimseng ………………………………….. with us, he would have had a good time.", "o": {"A": "had come", "B": "came", "C": "would have come", "D": "would come"}, "a": "A"}, {"id": "g-5-10", "y": "2009", "q": "Are you sure that your brother ……………………………….…. use the new equipment?", "o": {"A": "knows to", "B": "knows the", "C": "knows how", "D": "knows how to"}, "a": "D"}, {"id": "g-5-11", "y": "2009", "q": "It was not until she had arrived home ……..……..…. remembered her appointment with the doctor.", "o": {"A": "when she", "B": "that she", "C": "and she", "D": "she"}, "a": "A"}, {"id": "g-5-12", "y": "2009", "q": "Her grades have improved, but only ……………………………..", "o": {"A": "in a small amout", "B": "very slightly", "C": "minimum", "D": "some"}, "a": "B"}, {"id": "g-5-13", "y": "2009", "q": "The changes in this city have occurred …………………………………..", "o": {"A": "with swiftness", "B": "rapidly", "C": "fast", "D": "in rapid ways"}, "a": "B"}, {"id": "g-5-14", "y": "2009", "q": "There has not been a great response to the sale, ……………………………….…. ?", "o": {"A": "does there", "B": "hasn’t there", "C": "hasn’t it", "D": "has there"}, "a": "D"}, {"id": "g-6-1", "y": "2010", "q": "Dara ………………………..….. son has been kidnapped is a police officer.", "o": {"A": "who", "B": "that", "C": "whose", "D": "whom"}, "a": "C"}, {"id": "g-6-2", "y": "2010", "q": "When I arrived at the airport, the plane ……………….………", "o": {"A": "had taken off", "B": "has taken of", "C": "will take off", "D": "will be taking off"}, "a": "A"}, {"id": "g-6-3", "y": "2010", "q": "She didn’t anyone she knew, and ……………………….", "o": {"A": "neither did Sok", "B": "Sok didn’t too", "C": "neither does Sok", "D": "Sok doesn’t either"}, "a": "A"}, {"id": "g-6-4", "y": "2010", "q": "She wishes she ………………..…………. around the country.", "o": {"A": "can travel", "B": "travelled", "C": "has travelled", "D": "will travel"}, "a": "D"}, {"id": "g-6-5", "y": "2010", "q": "It ……………….…………… all day. I wonder when it will stop.", "o": {"A": "has been snowing", "B": "was snowing", "C": "snowed", "D": "has snowed"}, "a": "A"}, {"id": "g-6-6", "y": "2010", "q": "If it ……………………………………... tomorrow, we’ll cancel the babecue.", "o": {"A": "will rain", "B": "rain", "C": "rains", "D": "is raining"}, "a": "C"}, {"id": "g-6-7", "y": "2010", "q": "Sokha is capable ……………………………..…. doing better job.", "o": {"A": "about", "B": "in", "C": "for", "D": "of"}, "a": "D"}, {"id": "g-6-8", "y": "2010", "q": "Instead of …………………………….. about good news, Bora seemed to be different.", "o": {"A": "exciting", "B": "being excited", "C": "to excited", "D": "to be excited"}, "a": "B"}, {"id": "g-6-9", "y": "2010", "q": "A rabbit ran across the path in front of me as I ………………………………….. through the woods.", "o": {"A": "had been walking", "B": "am walking", "C": "had walked", "D": "was walking"}, "a": "D"}, {"id": "g-6-10", "y": "2010", "q": "She said that she ……………………………….…. the workshop on education.", "o": {"A": "has attended", "B": "will attend", "C": "had attended", "D": "is attending"}, "a": "C"}, {"id": "g-7-1", "y": "2010", "q": "John ……………………………. his report last night.", "o": {"A": "has written", "B": "wrote", "C": "was writing", "D": "writes"}, "a": "B"}, {"id": "g-7-2", "y": "2010", "q": "Dara …………………. the newspaper already.", "o": {"A": "has read", "B": "read", "C": "was reading", "D": "reads"}, "a": "A"}, {"id": "g-7-3", "y": "2010", "q": "Mrs. Sopha …………………. in the same place for 45 years, and she is not planning to retire yet.", "o": {"A": "has worked", "B": "worked", "C": "was working", "D": "works"}, "a": "A"}, {"id": "g-7-4", "y": "2010", "q": "Ratha ……………………… in Phnom Penh for one year when his parents came to visit.", "o": {"A": "lived", "B": "had lived", "C": "has lived", "D": "was living"}, "a": "B"}, {"id": "g-7-5", "y": "2010", "q": "We corrected our papers after we ……………………… the quiz.", "o": {"A": "took", "B": "has taken", "C": "was taking", "D": "had taken"}, "a": "D"}, {"id": "g-8-1", "y": "2010", "q": "Have you lived here……………………………. life?", "o": {"A": "your all", "B": "all the", "C": "the whole", "D": "all your"}, "a": "D"}, {"id": "g-8-2", "y": "2010", "q": "Please do not talk …………………. the orchestra is playing.", "o": {"A": "during", "B": "while", "C": "otherwise", "D": "that"}, "a": "B"}, {"id": "g-8-3", "y": "2010", "q": "The price of petrol has …………………………. up again.", "o": {"A": "lifted", "B": "got", "C": "gone", "D": "stood"}, "a": "C"}, {"id": "g-8-4", "y": "2010", "q": "Anyone who lives alone has to look after ……………………… .", "o": {"A": "himself", "B": "oneself", "C": "self", "D": "itself"}, "a": "B"}, {"id": "g-8-5", "y": "2010", "q": "The policeman took his notebook ………………………his top pocket.", "o": {"A": "into", "B": "in", "C": "out", "D": "from"}, "a": "D"}, {"id": "g-8-6", "y": "2010", "q": "The man ……………………of killing said that he was at the cinema at that time.", "o": {"A": "who are accused", "B": "who is accused", "C": "who was accused", "D": "who were accused"}, "a": "C"}, {"id": "g-8-7", "y": "2010", "q": "She’s from Cambodia, and ………………………… .", "o": {"A": "so is she", "B": "so was she", "C": "so I am", "D": "so am I គ្រៀបគ្រៀង នង"}, "a": "D"}, {"id": "g-8-8", "y": "2010", "q": "She told me not to worry, because she ……………………… me.", "o": {"A": "would be", "B": "would help", "C": "could go into", "D": "was at a meeting"}, "a": "B"}, {"id": "g-8-9", "y": "2010", "q": "Sophia said that there …………….. five different types of rhinos in the world today.", "o": {"A": "are", "B": "is", "C": "was", "D": "were"}, "a": "A"}, {"id": "g-8-10", "y": "2010", "q": "If you want to apply for a camp, you…………………….. a student.", "o": {"A": "must have", "B": "must be", "C": "must been", "D": "must be able"}, "a": "B"}, {"id": "g-9-1", "y": "2011", "q": "The pharmacist needed the doctor ……………………………. the prescription before she filled it.", "o": {"A": "to verify", "B": "verifies", "C": "verified", "D": "verifying"}, "a": "A"}, {"id": "g-9-2", "y": "2011", "q": "Mr. Kim …………………. has vocation after the project is completed.", "o": {"A": "will take", "B": "took", "C": "taking", "D": "has taken"}, "a": "A"}, {"id": "g-9-3", "y": "2011", "q": "The restaurant …………………………. overlooks the river is very popular.", "o": {"A": "it", "B": "that", "C": "whose", "D": "who"}, "a": "B"}, {"id": "g-9-4", "y": "2011", "q": "Mr. Savuth ……………………… for the day when the phone call came.", "o": {"A": "has already left", "B": "already leaves", "C": "already left", "D": "had already left"}, "a": "D"}, {"id": "g-9-5", "y": "2011", "q": "Television advertising costs ……………………… printing advertising.", "o": {"A": "most than", "B": "as much", "C": "more as", "D": "more than គ្រៀបគ្រៀង នង"}, "a": "D"}, {"id": "g-10-1", "y": "2011", "q": "No one of our representatives ……… to participate in the final draft.", "o": {"A": "chosen", "B": "were choosing", "C": "have been chosen", "D": "has been chosen"}, "a": "D"}, {"id": "g-10-2", "y": "2011", "q": "If Dara had found the wallet, we ……….. you right away.", "o": {"A": "would have called", "B": "called", "C": "would call", "D": "would calling"}, "a": "A"}, {"id": "g-10-3", "y": "2011", "q": "Patient …….. examined by the doctor.", "o": {"A": "were", "B": "is being", "C": "has", "D": "have been"}, "a": "B"}, {"id": "g-10-4", "y": "2011", "q": "Health care ……….. have been rising but so has the quality.", "o": {"A": "cost", "B": "costs", "C": "costing", "D": "costly គ្រៀបគ្រៀង នង"}, "a": "B"}, {"id": "g-10-5", "y": "2011", "q": "She wasn’t able to identify the man she ………. last night.", "o": {"A": "sees", "B": "was seen", "C": "will see", "D": "had seen"}, "a": "C"}, {"id": "g-11-1", "y": "2012", "q": "Every time she thinks of her departure from home, she ……………….. a little homesick.", "o": {"A": "will have felt", "B": "felt", "C": "feels", "D": "is feeling"}, "a": "C"}, {"id": "g-11-2", "y": "2012", "q": "Since she left her country a year ago, she…………….. her friends several times.", "o": {"A": "calls", "B": "will have called", "C": "is calling", "D": "has called"}, "a": "B"}, {"id": "g-11-3", "y": "2012", "q": "When she gets home, she …………. surprised by the changes that have taken place at home.", "o": {"A": "is", "B": "will be", "C": "has been", "D": "will have been"}, "a": "B"}, {"id": "g-11-4", "y": "2012", "q": "You can stay here…………..…… you don’t make a loud noise.", "o": {"A": "when", "B": "until", "C": "so long as", "D": "unless"}, "a": "C"}, {"id": "g-11-5", "y": "2012", "q": "The girl weeps whenever she …………………………. such a story.", "o": {"A": "hears", "B": "had heard", "C": "will hear", "D": "heard គ្រៀបគ្រៀង នង"}, "a": "A"}, {"id": "g-12-1", "y": "2013", "q": "Nary looks at her husband ……………….. she hasn’t seen him before.", "o": {"A": "as if", "B": "where", "C": "when", "D": "because"}, "a": "A"}, {"id": "g-12-2", "y": "2013", "q": "Dara decided to give up smoking …………….. he had had a heart attack two times.", "o": {"A": "in case", "B": "although", "C": "because", "D": "even if"}, "a": "C"}, {"id": "g-12-3", "y": "2013", "q": "…………. she was walking along the garden, she found a very rare flower.", "o": {"A": "because", "B": "provided that", "C": "so that", "D": "while"}, "a": "D"}, {"id": "g-13-1", "y": "2013", "q": "When we get to the party, everybody ……………", "o": {"A": "are dancing", "B": "has danced", "C": "will be dancing", "D": "dances"}, "a": "C"}, {"id": "g-13-2", "y": "2013", "q": "If that jacket ……….. so expensive, I would buy it.", "o": {"A": "wasn’t", "B": "isn’t", "C": "will be not", "D": "weren’t"}, "a": "A"}, {"id": "g-13-3", "y": "2013", "q": "The new bridge ……… before the end of next year.", "o": {"A": "will complete", "B": "will be completed", "C": "is completed", "D": "completed គ្រៀបគ្រៀង នង"}, "a": "B"}, {"id": "g-14-1", "y": "2014", "q": "Although Ms, Thida …………..… reservation, the hotel did not have a room for her.", "o": {"A": "made", "B": "has made", "C": "had made", "D": "makes"}, "a": "C"}, {"id": "g-14-2", "y": "2014", "q": "I ………………… on the bus when I dropped my wallet.", "o": {"A": "am getting", "B": "have gotten", "C": "get", "D": "was getting"}, "a": "D"}, {"id": "g-14-3", "y": "2014", "q": "Several trees fell down last night…………………. … the strong wind.", "o": {"A": "because of", "B": "since", "C": "because", "D": "so"}, "a": "A"}, {"id": "g-14-4", "y": "2014", "q": "We…………………. at that restaurant during the last few months.", "o": {"A": "don’t eat", "B": "won’t eat", "C": "haven’t eaten", "D": "didn’t eat"}, "a": "C"}, {"id": "g-14-5", "y": "2014", "q": "Mr Dara ……………… so many accidents if he drove more carefully.", "o": {"A": "would have", "B": "won’t have", "C": "would have had", "D": "wouldn’t have"}, "a": "D"}, {"id": "g-15-1", "y": "2014", "q": "We ………. with the prime minister for dinner at the Sunway Hotel tonight.", "o": {"A": "will be met", "B": "have been met", "C": "were met", "D": "are meeting"}, "a": "D"}, {"id": "g-15-2", "y": "2014", "q": "Mr Sambath ………… his vacation after the project is completed.", "o": {"A": "will take", "B": "took", "C": "has taken", "D": "taking"}, "a": "A"}, {"id": "g-15-3", "y": "2014", "q": "Mr Chantha …………. for the day when the phone call came.", "o": {"A": "has already left", "B": "already leaves", "C": "already left", "D": "had already left"}, "a": "D"}, {"id": "g-15-4", "y": "2014", "q": "If we keep ………….. like this, we should be done before the deadline.", "o": {"A": "working", "B": "worked", "C": "to work", "D": "work"}, "a": "A"}, {"id": "g-15-5", "y": "2014", "q": "The benefits programme …………. in the next few months.", "o": {"A": "had changed", "B": "were changed", "C": "will be changed", "D": "changed"}, "a": "C"}, {"id": "g-16-1", "y": "2015", "q": "Angkor Wat temple …………………….. by thousands of tourists every month.", "o": {"A": "was visited", "B": "visited", "C": "are visited", "D": "is visited"}, "a": "D"}, {"id": "g-16-2", "y": "2015", "q": "Mr. Sophal can’t talk on the phone because he……………...... dinner right now.", "o": {"A": "eats", "B": "is eating", "C": "has eaten", "D": "has been eating"}, "a": "B"}, {"id": "g-16-3", "y": "2015", "q": "I ………………… the house before you called.", "o": {"A": "leave", "B": "had left", "C": "am leaving", "D": "had been leaving"}, "a": "B"}, {"id": "g-16-4", "y": "2015", "q": "If I found a wallet on the street, I ……………….. it to police station.", "o": {"A": "will take", "B": "take", "C": "would take", "D": "am taking"}, "a": "C"}, {"id": "g-16-5", "y": "2015", "q": "The tree, ……………..…. behind my house, gives a lot of shade.", "o": {"A": "grows", "B": "which it grows", "C": "which grows", "D": "it grows"}, "a": "C"}, {"id": "g-17-1", "y": "2016", "q": "You must have something to eat before…………………….to school.", "o": {"A": "go", "B": "going", "C": "to go", "D": "of go"}, "a": "B"}, {"id": "g-17-2", "y": "2016", "q": "You have never seen this before, …………………. you?", "o": {"A": "haven’t", "B": "don’t", "C": "do", "D": "have"}, "a": "D"}, {"id": "g-17-3", "y": "2016", "q": "This problem ………………….. by this clever boy last night.", "o": {"A": "will be solved", "B": "is solved", "C": "was solved", "D": "solved"}, "a": "C"}, {"id": "g-17-4", "y": "2016", "q": "What ……………you do if you won a lot of money?", "o": {"A": "will", "B": "must", "C": "would", "D": "have"}, "a": "C"}, {"id": "g-17-5", "y": "2016", "q": "She was cleaning her teeth when the phone ………………… .", "o": {"A": "was going to ring", "B": "was ringing", "C": "rang", "D": "ring"}, "a": "C"}, {"id": "g-18-1", "y": "2017", "q": "Girls, you ……………… say those things about your teachers.", "o": {"A": "mustn’t", "B": "haven’t to", "C": "haven’t", "D": "mustn’t to"}, "a": "A"}, {"id": "g-18-2", "y": "2017", "q": "Have another piece of cake. No, thanks, ……………… too much.", "o": {"A": "I’ve ate", "B": "I ate", "C": "I eaten", "D": "I’ve eaten"}, "a": "D"}, {"id": "g-18-3", "y": "2017", "q": "I was going to do the washing, but the machine ………………… down.", "o": {"A": "broke", "B": "breaks", "C": "broken", "D": "break"}, "a": "A"}, {"id": "g-18-4", "y": "2017", "q": "My secretary was late. She had never ………………… late before.", "o": {"A": "was", "B": "had", "C": "came", "D": "been"}, "a": "D"}, {"id": "g-18-5", "y": "2017", "q": "If you give some money, I ………………… to go shopping.", "o": {"A": "can", "B": "could", "C": "will be able", "D": "will can"}, "a": "C"}, {"id": "g-19-1", "y": "2018", "q": "We haven’t got …………… money to buy a new car yet.", "o": {"A": "quite", "B": "too much", "C": "too many", "D": "enough"}, "a": "D"}, {"id": "g-19-2", "y": "2018", "q": "The person ……………… my hair usually does a very good job.", "o": {"A": "who he cuts", "B": "who cuts", "C": "cuts", "D": "cuts it"}, "a": "B"}, {"id": "g-19-3", "y": "2018", "q": "We ……………to the baseball game when it started to rain.", "o": {"A": "are driving", "B": "drives", "C": "driven", "D": "were driving"}, "a": "D"}, {"id": "g-19-4", "y": "2018", "q": "The new bridge ……………. before the end of next month.", "o": {"A": "will be completed", "B": "will complete", "C": "is completed", "D": "completes"}, "a": "A"}, {"id": "g-19-5", "y": "2018", "q": "Their marriage wouldn’t be so good if they ……………… so well with each other.", "o": {"A": "communicated", "B": "didn’t communicate", "C": "don’t communicate", "D": "communicate"}, "a": "B"}, {"id": "g-20-1", "y": "2019", "q": "Samnang works in the Post Office, ………………..?", "o": {"A": "is he", "B": "isn’t he", "C": "works he", "D": "doesn’t he"}, "a": "D"}, {"id": "g-20-2", "y": "2019", "q": "My father ……………….. in that firm from 1975 to 1989. Now he’s retired.", "o": {"A": "has worked", "B": "worked", "C": "is working", "D": "had worked"}, "a": "B"}, {"id": "g-20-3", "y": "2019", "q": "Which sentence is the correct one?", "o": {"A": "I am a cold", "B": "I’ve catched a cold", "C": "I have cold", "D": "I have caught a cold"}, "a": "D"}, {"id": "g-20-4", "y": "2019", "q": "I ………………. on a bench in the park when they ran past me.", "o": {"A": "was sitting", "B": "have sat", "C": "sat", "D": "was sat"}, "a": "A"}, {"id": "g-20-5", "y": "2019", "q": "Thida ……………….. to the cinema if you went with her.", "o": {"A": "will go", "B": "would go", "C": "goes", "D": "went"}, "a": "B"}, {"id": "g-22-1", "y": "2021", "q": "Mr. Kimseng can’t talk on phone because he ……………… dinner right now.", "o": {"A": "is eating", "B": "eats", "C": "has eaten", "D": "has been eating"}, "a": "A"}, {"id": "g-22-2", "y": "2021", "q": "That little girl ……………… for the last two days.", "o": {"A": "hasn’t eaten", "B": "doesn’t eat", "C": "isn’t eating", "D": "has eaten"}, "a": "A"}, {"id": "g-22-3", "y": "2021", "q": "Several trees fell down last night ………………… the strong wind.", "o": {"A": "because", "B": "so", "C": "since", "D": "because of"}, "a": "D"}, {"id": "g-22-4", "y": "2021", "q": "I hope you ………………… us when you come here.", "o": {"A": "visited", "B": "would visit", "C": "visiting", "D": "will visit"}, "a": "D"}, {"id": "g-22-5", "y": "2021", "q": "If she doesn’t do her homework, she ………………… punished.", "o": {"A": "is", "B": "would be", "C": "will be", "D": "will have"}, "a": "C"}, {"id": "g-23-1", "y": "2022", "q": "Good management ……………… to the employees.", "o": {"A": "will be listened", "B": "are listened", "C": "listen", "D": "listens"}, "a": "D"}, {"id": "g-23-2", "y": "2022", "q": "He has got a new friend ……………… works in the bank.", "o": {"A": "whose", "B": "where", "C": "who", "D": "which"}, "a": "C"}, {"id": "g-23-3", "y": "2022", "q": "Your mother used to visit you quite often, ………………… ?", "o": {"A": "didn’t she", "B": "doesn’t she", "C": "wouldn’t she", "D": "hadn’t she"}, "a": "A"}, {"id": "g-23-4", "y": "2022", "q": "I ………………… on the bus when I dropped my wallet.", "o": {"A": "am getting", "B": "get", "C": "was getting", "D": "have gotten"}, "a": "C"}, {"id": "g-23-5", "y": "2022", "q": "More roads ………………… every year.", "o": {"A": "was built", "B": "had built", "C": "are being built", "D": "are building"}, "a": "C"}, {"id": "g-24-1", "y": "2023", "q": "Parents ……………… a lot of patience with their children.", "o": {"A": "are having", "B": "have", "C": "has", "D": "having"}, "a": "B"}, {"id": "g-24-2", "y": "2023", "q": "The driver ……………… in the crash.", "o": {"A": "was injured", "B": "injured", "C": "injuring", "D": "he injured"}, "a": "A"}, {"id": "g-24-3", "y": "2023", "q": "Sophal plays tennis well, but he play football ………………… .", "o": {"A": "very good", "B": "much better", "C": "too well", "D": "best"}, "a": "B"}, {"id": "g-24-4", "y": "2023", "q": "All the trees in the park ………………… recently.", "o": {"A": "have been planted", "B": "have being planted", "C": "are planting", "D": "are being planted"}, "a": "A"}, {"id": "g-24-5", "y": "2023", "q": "If pictures weren’t so expensive, I ………………… many more.", "o": {"A": "would buy", "B": "will buy", "C": "bought", "D": "may buy"}, "a": "A"}, {"id": "g-25-1", "y": "2024", "q": "You broke the glass, ……………… ?", "o": {"A": "haven’t you", "B": "didn’t you", "C": "have you", "D": "did you"}, "a": "B"}, {"id": "g-25-2", "y": "2024", "q": "My father is quite fat now, but he ……………… be fat years ago.", "o": {"A": "didn’t use to", "B": "doesn’t use", "C": "didn’t use", "D": "use not"}, "a": "A"}, {"id": "g-25-3", "y": "2024", "q": "A lot of accidents ………………… by drunk drivers.", "o": {"A": "are caused", "B": "are cause", "C": "have cause", "D": "have caused"}, "a": "A"}, {"id": "g-25-4", "y": "2024", "q": "All flights to Siem Reap ………………… cancelled because of the bad weather.", "o": {"A": "have been", "B": "have being", "C": "are been", "D": "have"}, "a": "A"}, {"id": "g-25-5", "y": "2024", "q": "If he spoke louder, I ………………… understand much better.", "o": {"A": "would be able", "B": "would be able to", "C": "could", "D": "may"}, "a": "B"}, {"id": "g-26-1", "y": "2025", "q": "Girls, you ……………… say those things about your teachers.", "o": {"A": "mustn’t", "B": "haven’t to", "C": "haven’t", "D": "mustn’t to"}, "a": "A"}, {"id": "g-26-2", "y": "2025", "q": "I’m glad I ……………… my plane! I’ve just heard it’s broken down.", "o": {"A": "lost", "B": "refused", "C": "missed", "D": "altered"}, "a": "C"}, {"id": "g-26-3", "y": "2025", "q": "I ………………… on a bench in the park when they ran past me.", "o": {"A": "was sitting", "B": "have sat", "C": "sat", "D": "was sat"}, "a": "A"}, {"id": "g-26-4", "y": "2025", "q": "The person ………………… my hair usually does a very good job.", "o": {"A": "who he cuts", "B": "who cuts", "C": "cuts", "D": "cuts it"}, "a": "B"}, {"id": "g-26-5", "y": "2025", "q": "All flights to Phnom Penh ………………… cancelled because of the bad weather.", "o": {"A": "have been", "B": "has been", "C": "is been", "D": "are been"}, "a": "A"}, {"id": "g-27-1", "y": "2025", "q": "We saw ……………… children in the park.", "o": {"A": "any", "B": "some", "C": "a", "D": "much"}, "a": "B"}, {"id": "g-27-2", "y": "2025", "q": "I was going to do the washing, but the machine ……………… down.", "o": {"A": "broken", "B": "break", "C": "breaks", "D": "broke"}, "a": "D"}, {"id": "g-27-3", "y": "2025", "q": "The new bridge ………………… before the end of next month.", "o": {"A": "will be completed", "B": "is completed", "C": "completes", "D": "will complete"}, "a": "A"}, {"id": "g-27-4", "y": "2025", "q": "Several trees fell down last night ………………… the strong wind.", "o": {"A": "because", "B": "so", "C": "because of", "D": "since"}, "a": "C"}, {"id": "g-27-5", "y": "2025", "q": "If souvenirs weren’t so expensive, I ………………… many more.", "o": {"A": "may buy", "B": "will buy", "C": "bought", "D": "would buy"}, "a": "D"}], "vocabulary": [{"id": "v-0-1", "y": "2007", "q": "How ……………. is it from here to the city centre? ", "o": {"A": "long ", "B": "far ", "C": "distant ", "D": "near"}, "a": "B"}, {"id": "v-0-2", "y": "2007", "q": "Most countries still maintain system of ……………. national service, when all men must serve for a period of time in the armed forces. ", "o": {"A": "voluntary ", "B": "compulsory ", "C": "necessary ", "D": "forced"}, "a": "B"}, {"id": "v-0-3", "y": "2007", "q": "When there is a discussion in class, you will only get full value from it if you ……………. in an argument. ", "o": {"A": "participate ", "B": "share ", "C": "practise ", "D": "involve"}, "a": "A"}, {"id": "v-0-4", "y": "2007", "q": "It was his ……………. to become a doctor but somehow, he ended up as an actor. ", "o": {"A": "intention ", "B": "confusion ", "C": "illusion ", "D": "selection"}, "a": "A"}, {"id": "v-0-5", "y": "2007", "q": "In certain rural areas it is still necessary to ……………. the diet of children with certain proteins and vitamins. ", "o": {"A": "prevent ", "B": "increase ", "C": "aid ", "D": "supplement"}, "a": "C"}, {"id": "v-0-6", "y": "2007", "q": "Large areas of agricultural land were badly ……………. By the dust fallout. ", "o": {"A": "involved ", "B": "collapsed ", "C": "determined ", "D": "affected"}, "a": "D"}, {"id": "v-0-7", "y": "2007", "q": "The prediction about the cause of the typhoon was not at all ……………. ", "o": {"A": "accurate ", "B": "assessed ", "C": "estimated ", "D": "analysed"}, "a": "A"}, {"id": "v-0-8", "y": "2007", "q": "It was several days after the shooting before all the facts were ……………. to the press. ", "o": {"A": "released ", "B": "abandoned ", "C": "selected ", "D": "investigated"}, "a": "A"}, {"id": "v-1-1", "y": "2007", "q": "Despite very careful ……………., the police have not been able to identify who the murderer is yet. ", "o": {"A": "undertaking ", "B": "searching ", "C": "enquiries ", "D": "surveys"}, "a": "C"}, {"id": "v-1-2", "y": "2007", "q": "Heavy snow ……………. the train for several hours. ", "o": {"A": "cancelled ", "B": "delayed ", "C": "postponed ", "D": "changed"}, "a": "B"}, {"id": "v-1-3", "y": "2007", "q": "I still really like a cigarette even though I ……………. smoking two years ago. ", "o": {"A": "gave in ", "B": "gave up ", "C": "gave over ", "D": "completed"}, "a": "B"}, {"id": "v-1-4", "y": "2007", "q": "Most parents find it is difficult to ……………. their children nowadays. ", "o": {"A": "foster ", "B": "bring up ", "C": "develop ", "D": "grow up"}, "a": "B"}, {"id": "v-1-5", "y": "2007", "q": "Vutha always arrives on time. He is …………….. ", "o": {"A": "careful ", "B": "boring ", "C": "punctual ", "D": "timeless"}, "a": "C"}, {"id": "v-1-6", "y": "2007", "q": "Because of the energy crisis, many people claim that there is no ……………. to developing nuclear power. ", "o": {"A": "advantage ", "B": "reason ", "C": "alteration ", "D": "alternative"}, "a": "D"}, {"id": "v-1-7", "y": "2007", "q": "The restoration of the library was considered a great ……………. in view of the difficulty of raising money. ", "o": {"A": "architecture ", "B": "achievement ", "C": "building ", "D": "interest"}, "a": "B"}, {"id": "v-1-8", "y": "2007", "q": "According to the weather ……………., there will be rain tomorrow. ", "o": {"A": "programme ", "B": "forecast ", "C": "information ", "D": "survey"}, "a": "B"}, {"id": "v-2-1", "y": "2008", "q": "He wanted to make a good impression at the ……………. as he was eager to get a job. ", "o": {"A": "interrogation, ", "B": "meeting, ", "C": "briefing, ", "D": "interview,"}, "a": "D"}, {"id": "v-2-2", "y": "2008", "q": "It is a ……………. for the Chinese to visit their friends and relatives in New Year. ", "o": {"A": "tradition, ", "B": "custom, ", "C": "task, ", "D": "routine,"}, "a": "A"}, {"id": "v-2-3", "y": "2008", "q": "Cambodian people follow ……………. ", "o": {"A": "Hinduism ", "B": "Buddhism ", "C": "Islam ", "D": "Protestantism"}, "a": "B"}, {"id": "v-9-1", "y": "2011", "q": "We had a perfect view from the plane because the skies were …………….", "o": {"A": "empty", "B": "cloudy", "C": "open", "D": "clear"}, "a": "D"}, {"id": "v-9-2", "y": "2011", "q": "The path was very ………….. because of the wet weather.", "o": {"A": "stony", "B": "muddy", "C": "sandy", "D": "dusty"}, "a": "B"}, {"id": "v-9-3", "y": "2011", "q": "It’s always a good idea to ……………... clothes before you buy them.", "o": {"A": "put", "B": "hang", "C": "take", "D": "try"}, "a": "D"}, {"id": "v-9-4", "y": "2011", "q": "I hate doing the ………………….., especially cleaning the windows.", "o": {"A": "housework", "B": "employments", "C": "jobs", "D": "homework"}, "a": "A"}, {"id": "v-9-5", "y": "2011", "q": "Most people in the town …………. the idea of green and clean city.", "o": {"A": "agree", "B": "approve", "C": "support", "D": "believe"}, "a": "C"}, {"id": "v-9-6", "y": "2011", "q": "Too much stress can be ……………. to your health.", "o": {"A": "painful", "B": "harmful", "C": "graceful", "D": "careful"}, "a": "B"}, {"id": "v-9-7", "y": "2011", "q": "My sister had a baby boy. I’m really pleased to have a new ………………. .", "o": {"A": "cousin", "B": "nephew", "C": "aunt", "D": "niece"}, "a": "B"}, {"id": "v-9-8", "y": "2011", "q": "These shoes do not ……………, they are too big.", "o": {"A": "fit", "B": "suit", "C": "suitable", "D": "pass"}, "a": "B"}, {"id": "v-10-1", "y": "2011", "q": "At election time, every speech is calculated to win …………….", "o": {"A": "choices", "B": "votes", "C": "wishes", "D": "preferences"}, "a": "B"}, {"id": "v-10-2", "y": "2011", "q": "We were unable to reach an agreement because of the ………….. between two groups.", "o": {"A": "contact", "B": "concern", "C": "connection", "D": "conflict"}, "a": "D"}, {"id": "v-10-3", "y": "2011", "q": "After several hours, the doctor was finally able to give us his ……………... Dara had broken his ankle.", "o": {"A": "diagnosis", "B": "disease", "C": "symptoms", "D": "signs"}, "a": "A"}, {"id": "v-10-4", "y": "2011", "q": "This artist helps to reserve our local………………….. by using traditional theme in his work.", "o": {"A": "culture", "B": "creation", "C": "events", "D": "skills"}, "a": "B"}, {"id": "v-10-5", "y": "2011", "q": "I don’t really appreciate classical music, I prefer the …………. arts such as painting and sculpture.", "o": {"A": "festival", "B": "cinema", "C": "visual", "D": "performing"}, "a": "A"}, {"id": "v-10-6", "y": "2011", "q": "I ……………. on the news that the price of the gas is going up again.", "o": {"A": "looked", "B": "heard", "C": "listened", "D": "watched"}, "a": "B"}, {"id": "v-10-7", "y": "2011", "q": "It’ll take you over an hour to get to the center in ………………. hour.", "o": {"A": "rush", "B": "busy", "C": "run", "D": "crowded"}, "a": "A"}, {"id": "v-10-8", "y": "2011", "q": "Global warming is likely to result in more …………… because of an increase in rainfall.", "o": {"A": "waves", "B": "droughts", "C": "storms", "D": "flood"}, "a": "A"}, {"id": "v-13-1", "y": "2013", "q": "I’m afraid there isn’t ………. in the car for everyone.", "o": {"A": "space", "B": "room", "C": "places", "D": "seating"}, "a": "A"}, {"id": "v-13-2", "y": "2013", "q": "Excuse me. Have you got …………, please? I want to smoke.", "o": {"A": "match", "B": "the fire", "C": "a light", "D": "lighting"}, "a": "C"}, {"id": "v-13-3", "y": "2013", "q": "I like your hat, Bopha. It really …………. you.", "o": {"A": "suiting", "B": "passes", "C": "shows", "D": "suits"}, "a": "D"}, {"id": "v-13-4", "y": "2013", "q": "Is there ………….. wine for everyone? We will have a huge drink tonight.", "o": {"A": "enough", "B": "enough of", "C": "many", "D": "many of"}, "a": "A"}, {"id": "v-14-1", "y": "2014", "q": "I’m really ……………… of my son who won first prize in the art competition.", "o": {"A": "pleased", "B": "proud", "C": "delighted", "D": "happy"}, "a": "B"}, {"id": "v-14-2", "y": "2014", "q": "We all need to …………..… responsibility for improving our local community.", "o": {"A": "have", "B": "make", "C": "take", "D": "give"}, "a": "C"}, {"id": "v-14-3", "y": "2014", "q": "It’s important to set yourself clear ……………… so you know what you are aiming for.", "o": {"A": "ambitions", "B": "opportunities", "C": "decisions", "D": "goals"}, "a": "D"}, {"id": "v-14-4", "y": "2014", "q": "According to the weather ………………. , there will be rain tomorrow.", "o": {"A": "programme", "B": "information", "C": "survey", "D": "forecast"}, "a": "D"}, {"id": "v-14-5", "y": "2014", "q": "Many people believe that violent computer games can have a harmful ……………… on children.", "o": {"A": "effect", "B": "affect", "C": "damage", "D": "involvement"}, "a": "A"}, {"id": "v-15-1", "y": "2014", "q": "At the age of 60, Mr. Vuth retired and lived off his ……………… .", "o": {"A": "salary", "B": "allowance", "C": "grant", "D": "pension"}, "a": "D"}, {"id": "v-15-2", "y": "2014", "q": "Please confirm your reservation in ……………… .", "o": {"A": "letter", "B": "writing", "C": "words", "D": "paper"}, "a": "B"}, {"id": "v-15-3", "y": "2014", "q": "Everybody knew Samnang had …………. a crime but nobody wanted to tell the police.", "o": {"A": "committed", "B": "done", "C": "made", "D": "performed"}, "a": "A"}, {"id": "v-15-4", "y": "2014", "q": "The researchers ………….. many experiments to find to most effective materials.", "o": {"A": "considered", "B": "confirmed", "C": "concerned", "D": "conducted"}, "a": "D"}, {"id": "v-15-5", "y": "2014", "q": "I ………… on the news that the price of gas is going up again.", "o": {"A": "looked", "B": "listened", "C": "heard", "D": "watched"}, "a": "A"}, {"id": "v-16-1", "y": "2015", "q": "How much do they ……………… for cleaning your room?", "o": {"A": "demand", "B": "cost", "C": "charge", "D": "need"}, "a": "C"}, {"id": "v-16-2", "y": "2015", "q": "In some countries, smoking in public places is …………… because many people are hurt of smoke.", "o": {"A": "prohibited", "B": "increased", "C": "encourage", "D": "continued"}, "a": "A"}, {"id": "v-16-3", "y": "2015", "q": "The government should …………….….. a law to make computer hacking illegal.", "o": {"A": "allow", "B": "enter", "C": "pass", "D": "bring"}, "a": "C"}, {"id": "v-16-4", "y": "2015", "q": "The bad weather …………..……… the flight for several hours.", "o": {"A": "postponed", "B": "delayed", "C": "cancelled", "D": "stopped"}, "a": "B"}, {"id": "v-16-5", "y": "2015", "q": "In recent years, inflation has almost double the ………….……. of living.", "o": {"A": "price", "B": "expense", "C": "charge", "D": "cost"}, "a": "D"}, {"id": "v-17-1", "y": "2016", "q": "What are you going to do when you …………. school?", "o": {"A": "conclude", "B": "end", "C": "complete", "D": "leave"}, "a": "D"}, {"id": "v-17-2", "y": "2016", "q": "The hotel services are bad, so we should write a …………….. to the manager.", "o": {"A": "complaint", "B": "message", "C": "information", "D": "essay"}, "a": "A"}, {"id": "v-17-3", "y": "2016", "q": "Bopha cried out with …………. at the beautiful present Mr. Kimseng gave her.", "o": {"A": "depress", "B": "horror", "C": "anger", "D": "delight"}, "a": "D"}, {"id": "v-17-4", "y": "2016", "q": "Is it possible to …………. now for next term’s evening classes?", "o": {"A": "send", "B": "enroll", "C": "join in", "D": "enter"}, "a": "B"}, {"id": "v-17-5", "y": "2016", "q": "Most parents find it difficult to …………… their children nowadays.", "o": {"A": "bring up", "B": "develop", "C": "grow up", "D": "set up"}, "a": "A"}, {"id": "v-18-1", "y": "2017", "q": "Before you begin the exam paper, always read the ………………… carefully.", "o": {"A": "orders", "B": "instruction", "C": "rules", "D": "answers"}, "a": "B"}, {"id": "v-18-2", "y": "2017", "q": "If you put your money in the bank, it will earn ten percent ……………… .", "o": {"A": "interest", "B": "profit", "C": "deposit", "D": "investment"}, "a": "A"}, {"id": "v-18-3", "y": "2017", "q": "Most people in the town ……………… the idea of Green and Clean city.", "o": {"A": "agree", "B": "approve", "C": "support", "D": "believe"}, "a": "C"}, {"id": "v-18-4", "y": "2017", "q": "The plane was delayed by fog, and so I ………………… my connection.", "o": {"A": "lost", "B": "abandoned", "C": "forget", "D": "missed"}, "a": "D"}, {"id": "v-18-5", "y": "2017", "q": "The fans climbed over the fence to ………………… paying.", "o": {"A": "avoid", "B": "prevent", "C": "abandon", "D": "refuse"}, "a": "A"}, {"id": "v-19-1", "y": "2018", "q": "I saw a nasty …………… between two cars this morning.", "o": {"A": "damage", "B": "danger", "C": "accident", "D": "happening"}, "a": "C"}, {"id": "v-19-2", "y": "2018", "q": "All medicines should be kept out of …………… of children.", "o": {"A": "hand", "B": "touch", "C": "contact", "D": "reach"}, "a": "D"}, {"id": "v-19-3", "y": "2018", "q": "Everything in the sale has been ……………… to half price.", "o": {"A": "reduced", "B": "decreased", "C": "bargained", "D": "lowered"}, "a": "A"}, {"id": "v-19-4", "y": "2018", "q": "At work, Vuthy always arrives on time, he’s so ………………. .", "o": {"A": "timeless", "B": "punctual", "C": "boring", "D": "careful"}, "a": "B"}, {"id": "v-19-5", "y": "2018", "q": "It’ll take you over an hour to get to the city centre in ……………… hour.", "o": {"A": "rush", "B": "busy", "C": "run", "D": "crowded"}, "a": "A"}, {"id": "v-20-1", "y": "2019", "q": "At ……………… time, there is always plenty of work to do on a farm.", "o": {"A": "production", "B": "profit", "C": "plant", "D": "harvest"}, "a": "D"}, {"id": "v-20-2", "y": "2019", "q": "It is against the …………. not to wear seat belt in a plane.", "o": {"A": "rule", "B": "regulation", "C": "law", "D": "order"}, "a": "C"}, {"id": "v-20-3", "y": "2019", "q": "Everything in the sale has been …………….. to half price.", "o": {"A": "reduced", "B": "decreased", "C": "bargained", "D": "lowered"}, "a": "A"}, {"id": "v-20-4", "y": "2019", "q": "I ………………. to inform you that your grandmother died ten minutes ago.", "o": {"A": "apologise", "B": "sorry", "C": "pity", "D": "regret"}, "a": "D"}, {"id": "v-20-5", "y": "2019", "q": "We were unable to reach an agreement because of the ………….. between the two groups.", "o": {"A": "contact", "B": "concern", "C": "connection", "D": "conflict"}, "a": "D"}, {"id": "v-22-1", "y": "2021", "q": "I’m really ………………… of my child who got the first prize in art competition.", "o": {"A": "pleased", "B": "proud", "C": "happy", "D": "delighted"}, "a": "B"}, {"id": "v-22-2", "y": "2021", "q": "In recent years inflection has almost doubled the ……………… of living.", "o": {"A": "cost", "B": "expense", "C": "charge", "D": "price"}, "a": "A"}, {"id": "v-22-3", "y": "2021", "q": "The restaurant services are bad, so we should write a ……………… to the manager.", "o": {"A": "essay", "B": "message", "C": "complaint", "D": "information"}, "a": "C"}, {"id": "v-22-4", "y": "2021", "q": "The plane was delayed by fog, and so I ………………… my connection.", "o": {"A": "lost", "B": "abandoned", "C": "forgot", "D": "missed"}, "a": "D"}, {"id": "v-22-5", "y": "2021", "q": "She went to the library to ………………… .", "o": {"A": "borrow a book", "B": "lend a book", "C": "let a book", "D": "hire a book"}, "a": "A"}, {"id": "v-23-1", "y": "2022", "q": "What are you going to do when you ………………… school?", "o": {"A": "conclude", "B": "end", "C": "complete", "D": "leave"}, "a": "D"}, {"id": "v-23-2", "y": "2022", "q": "All medicines should be kept out of ……………… of children.", "o": {"A": "hand", "B": "touch", "C": "contact", "D": "reach"}, "a": "D"}, {"id": "v-23-3", "y": "2022", "q": "He ……………… to get some cards for his birthday, but none arrived.", "o": {"A": "promised", "B": "expected", "C": "assume", "D": "supposed"}, "a": "B"}, {"id": "v-23-4", "y": "2022", "q": "Is it possible to ………………… now for the next term’s classes?", "o": {"A": "participate", "B": "join in", "C": "enroll", "D": "enter"}, "a": "C"}, {"id": "v-23-5", "y": "2022", "q": "I ………………… to inform you that your grandmother died ten minutes ago.", "o": {"A": "apologise", "B": "sorry", "C": "pity", "D": "regret"}, "a": "D"}, {"id": "v-24-1", "y": "2023", "q": "Many areas are very dry, the villagers spent a lot of time to get water from the …………………", "o": {"A": "hill", "B": "forest", "C": "pond", "D": "flood"}, "a": "C"}, {"id": "v-24-2", "y": "2023", "q": "Why don’t you become a teacher? There’s a great ……………… of them at the moment.", "o": {"A": "shortage", "B": "want", "C": "requirement", "D": "need"}, "a": "A"}, {"id": "v-24-3", "y": "2023", "q": "When my father died, I had no ……………… but to leave schools and get a job.", "o": {"A": "possibility", "B": "choice", "C": "hope", "D": "chance"}, "a": "B"}, {"id": "v-24-4", "y": "2023", "q": "Today’s volleyball match has been ………………… because of bad weather. They will play next Thursday instead.", "o": {"A": "postponed", "B": "cancelled", "C": "decided", "D": "put away"}, "a": "A"}, {"id": "v-24-5", "y": "2023", "q": "He was given the ………………… to study abroad.", "o": {"A": "occasion", "B": "possibility", "C": "advantage", "D": "opportunity"}, "a": "D"}, {"id": "v-25-1", "y": "2024", "q": "Did you ………………… that book from the school library?", "o": {"A": "beg", "B": "ask", "C": "lend", "D": "borrow"}, "a": "D"}, {"id": "v-25-2", "y": "2024", "q": "My driving license ……………… at the end of this month.", "o": {"A": "retires", "B": "expires", "C": "passes out", "D": "concludes"}, "a": "B"}, {"id": "v-25-3", "y": "2024", "q": "I was very ……………… for all the advice she gave me.", "o": {"A": "depress", "B": "glad", "C": "grateful", "D": "please"}, "a": "C"}, {"id": "v-25-4", "y": "2024", "q": "After a few hours of discussion, we finally reached a …………………", "o": {"A": "compromise", "B": "promise", "C": "situation", "D": "solution"}, "a": "A"}, {"id": "v-25-5", "y": "2024", "q": "Many people believe that violent computer games can have a harmful ………………… on children.", "o": {"A": "affect", "B": "effect", "C": "damage", "D": "involvement"}, "a": "B"}, {"id": "v-26-1", "y": "2025", "q": "In some countries, smoking in public places is ………………… because it badly affects other people.", "o": {"A": "prohibited", "B": "increased", "C": "encouraged", "D": "continued"}, "a": "A"}, {"id": "v-26-2", "y": "2025", "q": "My driving license ……………… at the end of this month.", "o": {"A": "retires", "B": "expires", "C": "passes out", "D": "concludes"}, "a": "B"}, {"id": "v-26-3", "y": "2025", "q": "I ………………… to inform you that your daughter died half an hour ago.", "o": {"A": "apologize", "B": "sorry", "C": "pity", "D": "regret"}, "a": "D"}, {"id": "v-26-4", "y": "2025", "q": "Too much stress can be ………………… to your health.", "o": {"A": "painful", "B": "harmful", "C": "graceful", "D": "careful"}, "a": "B"}, {"id": "v-26-5", "y": "2025", "q": "We were unable to reach an agreement because of the ………………… between the two groups.", "o": {"A": "contact", "B": "concern", "C": "contract", "D": "conflict"}, "a": "D"}, {"id": "v-27-1", "y": "2025", "q": "According to the weather ………………… there will be rain tomorrow.", "o": {"A": "programme", "B": "survey", "C": "forecast", "D": "information"}, "a": "C"}, {"id": "v-27-2", "y": "2025", "q": "How much do they ……………… for cleaning your room?", "o": {"A": "cost", "B": "need", "C": "demand", "D": "charge"}, "a": "D"}, {"id": "v-27-3", "y": "2025", "q": "The restaurant services are bad, so we should write a ……………… to the manager.", "o": {"A": "complaint", "B": "information", "C": "message", "D": "essay"}, "a": "A"}, {"id": "v-27-4", "y": "2025", "q": "Most people in the town ………………… the idea of clean and green city.", "o": {"A": "support", "B": "agree", "C": "believe", "D": "approve"}, "a": "A"}, {"id": "v-27-5", "y": "2025", "q": "Please confirm your reservation in ………………… .", "o": {"A": "writing", "B": "words", "C": "letter", "D": "paper"}, "a": "A"}]};
+
+    var KEY='kmpractice_v1', mem=null;
+    function loadState(){
+      try{var s=localStorage.getItem(KEY);if(s)return JSON.parse(s);}catch(e){}
+      return mem||{usedG:[],usedV:[],setNo:0};
+    }
+    function saveState(st){mem=st;try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}}
+
+    function pickBatch(all,used,n){
+      var remaining=all.filter(function(q){return used.indexOf(q.id)===-1;});
+      if(remaining.length<n){used.length=0;remaining=all.slice();}
+      for(var i=remaining.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=remaining[i];remaining[i]=remaining[j];remaining[j]=t;}
+      var chosen=remaining.slice(0,n);
+      chosen.forEach(function(q){used.push(q.id);});
+      return chosen;
+    }
+
+    var current={g:[],v:[],setNo:1};
+    function buildBlank(text){return text.replace(/[\u2026\.]{2,}/g,'<span class="blank"></span>');}
+    function esc(s){return String(s).replace(/[&<>]/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;'})[c];});}
+
+    function renderCard(q,type,idx){
+      var isV=(type==='v');
+      var letters=Object.keys(q.o);
+      var opts='';
+      for(var k=0;k<letters.length;k++){
+        var L=letters[k];
+        opts+='<label class="opt" data-let="'+L+'">'
+          +'<input type="radio" name="'+q.id+'" value="'+L+'">'
+          +'<span class="lab">'+L+'.</span>'
+          +'<span class="txt">'+esc(q.o[L])+'</span>'
+          +'<span class="mark"></span></label>';
+      }
+      return '<div class="card '+(isV?'voc':'')+'" data-id="'+q.id+'" data-ans="'+q.a+'">'
+        +'<div class="qhead"><span class="qnum">លំហាត់ទី '+(idx+1)+'</span>'
+        +'<span class="year">ប្រឡង '+q.y+'</span></div>'
+        +'<div class="stem">'+buildBlank(esc(q.q))+'</div>'
+        +'<div class="opts">'+opts+'</div><div class="feedback"></div></div>';
+    }
+
+    function loadSet(reuse){
+      var st=loadState();
+      if(!reuse){
+        current.g=pickBatch(BANK.grammar,st.usedG,5);
+        current.v=pickBatch(BANK.vocabulary,st.usedV,5);
+        st.setNo=(st.setNo||0)+1;current.setNo=st.setNo;saveState(st);
+      }
+      document.getElementById('setNo').textContent=current.setNo;
+      document.getElementById('gWrap').innerHTML=current.g.map(function(q,i){return renderCard(q,'g',i);}).join('');
+      document.getElementById('vWrap').innerHTML=current.v.map(function(q,i){return renderCard(q,'v',i);}).join('');
+      document.getElementById('poolInfo').textContent='ឃ្លាំងលំហាត់សរុប ៖ វេយ្យាករណ៍ '+BANK.grammar.length+' + វាក្យសព្ទ '+BANK.vocabulary.length;
+      document.getElementById('score').classList.remove('show');
+      document.getElementById('warn').classList.remove('show');
+      document.getElementById('checkBtn').style.display='';
+      document.getElementById('retryBtn').style.display='none';
+      attachSelect();
+      try{window.scrollTo(0,0);}catch(e){}
+    }
+
+    function attachSelect(){
+      var opts=document.querySelectorAll('#app .opt');
+      for(var i=0;i<opts.length;i++){
+        opts[i].addEventListener('click',function(){
+          var card=this.closest('.card');
+          if(card.classList.contains('done'))return;
+          this.querySelector('input').checked=true;
+          var os=card.querySelectorAll('.opt');
+          for(var j=0;j<os.length;j++)os[j].classList.remove('sel');
+          this.classList.add('sel');
+        });
+      }
+    }
+
+    function grade(){
+      var cards=[].slice.call(document.querySelectorAll('#app .card'));
+      var unanswered=cards.filter(function(c){return !c.querySelector('input:checked');});
+      var w=document.getElementById('warn');
+      if(unanswered.length){
+        w.textContent='នៅសល់ '+unanswered.length+' លំហាត់ដែលមិនទាន់ឆ្លើយ ។ សូមឆ្លើយឲ្យគ្រប់សិន បន្ទាប់មកចុចពិនិត្យ ។';
+        w.classList.add('show');
+        unanswered[0].scrollIntoView({block:'center'});
+        return;
+      }
+      w.classList.remove('show');
+      var g=0,v=0;
+      cards.forEach(function(card){
+        var ans=card.getAttribute('data-ans');
+        var isV=card.classList.contains('voc');
+        var chosen=card.querySelector('input:checked');
+        var pick=chosen?chosen.value:null;
+        card.classList.add('done');
+        var os=card.querySelectorAll('.opt');
+        for(var i=0;i<os.length;i++){
+          var op=os[i], L=op.getAttribute('data-let'), mk=op.querySelector('.mark');
+          op.classList.remove('sel');
+          if(L===ans){op.classList.add('correct');mk.textContent='✓ ត្រឹមត្រូវ';}
+          else if(L===pick){op.classList.add('wrong');mk.textContent='✗';}
+          op.querySelector('input').disabled=true;
+        }
+        var fb=card.querySelector('.feedback');
+        if(pick===ans){fb.innerHTML='<span class="tag ok">ត្រូវ ✓ (១ ពិន្ទុ)</span>';if(isV)v++;else g++;}
+        else{
+          card.classList.add('miss');
+          var at=answerText(card,ans);
+          fb.innerHTML='<span class="tag no">ខុស ✗</span> <span class="tag na">ចម្លើយត្រឹមត្រូវ ៖ '+ans+'. '+esc(at)+'</span>';
+        }
+      });
+      showScore(g,v);
+    }
+    function answerText(card,ans){
+      var os=card.querySelectorAll('.opt');
+      for(var i=0;i<os.length;i++){if(os[i].getAttribute('data-let')===ans)return os[i].querySelector('.txt').textContent;}
+      return '';
+    }
+    function showScore(g,v){
+      var total=g+v;
+      document.getElementById('gScore').textContent=g+' / 5';
+      document.getElementById('vScore').textContent=v+' / 5';
+      document.getElementById('scoreBig').textContent='ពិន្ទុសរុប ៖ '+total+' / 10';
+      document.getElementById('scorePct').textContent=(total*10)+' ភាគរយ';
+      var m;
+      if(total===10)m='ល្អឥតខ្ចោះ ! ត្រឹមត្រូវទាំងអស់ 🎉';
+      else if(total>=8)m='ពូកែណាស់ ! បន្តរក្សាកម្រិតនេះ ។';
+      else if(total>=6)m='ល្អ ! សូមពិនិត្យលំហាត់ដែលខុស ដើម្បីកែលម្អបន្ថែម ។';
+      else if(total>=4)m='ត្រូវខិតខំបន្ថែម ។ សូមអានចម្លើយត្រឹមត្រូវ ហើយសាកម្តងទៀត ។';
+      else m='កុំបាក់ទឹកចិត្ត ។ សូមសិក្សាចម្លើយត្រឹមត្រូវ ហើយបន្តអនុវត្តលំហាត់ថ្មី ។';
+      document.getElementById('msg').textContent=m;
+      document.getElementById('score').classList.add('show');
+      document.getElementById('checkBtn').style.display='none';
+      document.getElementById('retryBtn').style.display='';
+      try{window.scrollTo(0,0);}catch(e){}
+    }
+    function retrySame(){
+      var cards=document.querySelectorAll('#app .card');
+      for(var i=0;i<cards.length;i++){
+        var card=cards[i];
+        card.classList.remove('done','miss');
+        card.querySelector('.feedback').innerHTML='';
+        var os=card.querySelectorAll('.opt');
+        for(var j=0;j<os.length;j++){
+          os[j].classList.remove('correct','wrong','sel');
+          os[j].querySelector('.mark').textContent='';
+          var inp=os[j].querySelector('input');inp.disabled=false;inp.checked=false;
+        }
+      }
+      document.getElementById('score').classList.remove('show');
+      document.getElementById('checkBtn').style.display='';
+      document.getElementById('retryBtn').style.display='none';
+      try{window.scrollTo(0,0);}catch(e){}
+    }
+
+    document.getElementById('checkBtn').addEventListener('click',grade);
+    document.getElementById('newBtn').addEventListener('click',function(){loadSet(false);});
+    document.getElementById('retryBtn').addEventListener('click',retrySame);
+    loadSet(false);
+  }catch(err){
+    // If anything fails, keep the static fallback visible so questions are still shown
+    var a=document.getElementById('app'); if(a)a.style.display='none';
+    var f=document.getElementById('fallback'); if(f)f.style.display='block';
+  }
+})();
+</script>
+</body>
+</html>
